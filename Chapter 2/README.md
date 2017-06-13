@@ -348,6 +348,50 @@ F | 7
 -5 | 3
 -1 | -1
 
+## 2.25 
+考虑下列代码，这段代码视图计算数组 a 中所有元素的和，其中元素的数量由参数 length 给出。
+
+```
+/ *WARNING: This is buggy code */
+float sum_elements(float a[], unsigned length) {
+	int i;
+	float result = 0;
+	
+	for (i = 0; i <= length; i++) 
+		result += a[i];
+	return result
+}
+```
+当参数 length 等于 0 时，运行这段代码应该返回 0.0。但实际上，运行时会遇到一个内存错误。请揭示为什么会发生这样的情况，并且说明如何修改代码。
+
+解答：当 `length` 为 `0` 时，执行 `length - 1` 得到 `-1`，由于 `length` 是 `unsigned` 的，所以 -1 转成 `unsigned` 时变得很大，这超出了数组的范围。将条件 `i <= length - 1` 改成 `i < length`
+
+## 2.26 
+现在给你一个任务，写一个函数用来判定一个字符串是否比另一个更长。前提是你要用字符串库函数 strlen，它的声明如下：
+
+```
+/* Prototype for library function strlen */
+size_t strlen(const char *s)；
+```
+最开始你写的函数是这样的：
+
+```
+/* Determine whether string s is longer than string t */
+/* WARNING: This function is buggy */
+int strlonger(char *s, char *t) {
+	return strlen(s) - strlen(t) > 0;
+}
+```
+当你再一些示例数据上测试这个函数时，一切似乎都是正确的。进一步研究发现在头文件 stdio.h 中数据类型 size_t 是定义成 unsigned int 的。
+A. 在什么情况下，这个函数会产生不正确的结果。
+B. 解释为什么会出现这样不正确的结果。
+C. 说明如何修改这段代码好让它能可靠地工作。
+
+解答：
+A. 当 s 的长度为 0 而 t 的长度不为 0 时会产生不正确的结果。
+B. 因为 0 减去一个正数得到的是一个负数，但是由于是 unsigned int 类型，负数就变成了一个很大的值，而且比 0 大，所以得到一个不正确的结果
+C. strlen(s) > strlen(t) 
+
 
 
 
